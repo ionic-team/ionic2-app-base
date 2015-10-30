@@ -22,7 +22,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: "awesome-typescript-loader?doTypeCheck=false&useBabel=true&useWebpackText=true",
+        loader: "awesome-typescript-loader?doTypeCheck=false&useWebpackText=true",
         include: [wwwPath],
         // include: /www(\/|\\)app(\/|\\)/,
         exclude: /node_modules/
