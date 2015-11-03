@@ -12,6 +12,6 @@
     "webpack": "1.10.5"
   },
   "dependencies": {
-    "ionic-framework": "2.0.0-alpha.30"
+    "ionic-framework": "2.0.0-alpha.31"
   }
 }
