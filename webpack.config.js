@@ -39,14 +39,12 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       "node_modules",
-      "node_modules/ionic-framework/dist/src/es5/common", // ionic-framework npm package (stable)
       "node_modules/ionic-framework/node_modules", // angular is a dependency of ionic
+      "node_modules/ionic-framework/dist/src/es5/common", // ionic-framework npm package (stable)
       "node_modules/ionic-framework/dist/js", // for web-animations polyfill
 
-      // "node_modules/ionic2/dist/src/es5/common", // driftyco/ionic2 repo (master)
-      // "dist/src/es5/common",
-      // "node_modules/ionic2/node_modules",
-      // "node_modules/ionic2/dist/js"
+      // See README for steps on developing against ionic-framework locally
+      // "dist/src/es5/common" // when developing against locally linked ionic-framework (master)
     ],
     extensions: ["", ".js", ".ts"]
   }
