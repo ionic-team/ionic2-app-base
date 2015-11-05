@@ -9,5 +9,6 @@
     "rootDir": ".",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
-  }
+  },
+  "compileOnSave": false
 }
