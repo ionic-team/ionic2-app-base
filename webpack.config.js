@@ -14,7 +14,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: "awesome-typescript-loader?doTypeCheck=false&useBabel=true&useWebpackText=true",
+        loader: "awesome-typescript-loader?doTypeCheck=false&useWebpackText=true",
         include: [path.join(__dirname, 'www')],
         exclude: /node_modules/
       },
