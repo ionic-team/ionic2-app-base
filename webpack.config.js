@@ -2,7 +2,10 @@ var path = require('path');
 
 module.exports = {
   entry: [
+    "es6-shim",
     "reflect-metadata",
+    "web-animations.min",
+    "zone.js",
     path.join(__dirname, 'www', 'app', 'app.js')
   ],
   output: {
