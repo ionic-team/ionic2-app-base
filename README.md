@@ -8,7 +8,7 @@ The `ionic serve` command compiles your ES6 files to ES5, your Sass files to CSS
 When you start your project with `ionic start`, the latest version of `ionic-framework` is installed automatically. To update your ionic version in an existing project, run `npm install ionic-framework`. This will install the latest version of `ionic-framework` published to npm.
 
 #### Notes:
-- To develop against a local version of ionic-framework (master) you'll need to do the following:
+- THIS IS NOT UPDATING YOUR APP. THIS IS FOR DEVELOPING AGAINST THE UNSTABLE MASTER BRANCH, WHICH WE DO NOT RECOMMEND. SEE [Updating Ionic](#updating-ionic) FOR INSTRUCTIONS ON UPDATING TO THE LATEST VERSION OF THE FRAMEWORK. To develop against a local version of ionic-framework (master) you'll need to do the following:
 ```bash
 # if you haven't already, clone the ionic2 repo:
 $ git clone https://github.com/driftyco/ionic2.git
