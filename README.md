@@ -34,6 +34,11 @@ resolve: {
   ],
 }
 ```
+Update the ionic2 [`gulpfile.js #L141`](https://github.com/driftyco/ionic2/blob/master/gulpfile.js#L141) to this in order to use `gulp watch` and make changes to the ionic2 repo:
+```js
+gulp.start('transpile.common');
+```
+
 
 ### Missing Ionic 1 features
 
