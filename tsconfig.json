@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
+    "allowNonTsExtensions": true,
+    "isolatedModules": true,
+    "noLib": true,
     "target": "ES5",
     "module": "commonjs",
     "noEmitOnError": false,
     "rootDir": ".",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false
   },
-  "files": [
-    "www/app/app.ts"
-  ],
   "exclude": [
     "node_modules"
   ],

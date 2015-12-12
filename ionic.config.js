@@ -10,14 +10,14 @@ module.exports = {
   // ex: beforeServe, afterRun, beforePrepare, etc.
   hooks: {
     beforeServe: function(argv) {
-      // var spawn = require('child_process').spawn;
-      // var gulpWatch = spawn('gulp', ['watch']);
-      // gulpWatch.stdout.on('data', function(data) {
-      //   console.log(data);
-      // });
-      // gulpWatch.stderr.on('data', function(data) {
-      //   console.log('gulp watch error: ' + data);
-      // });
+      var spawn = require('child_process').spawn;
+      var gulpWatch = spawn('gulp', ['watch']);
+      gulpWatch.stdout.on('data', function(data) {
+        console.log(data.toString());
+      });
+      gulpWatch.stderr.on('data', function(data) {
+        console.log('gulp watch error: ' + data.toString());
+      });
     }
   },
 
@@ -28,7 +28,7 @@ module.exports = {
     buildCSSDir: 'css',
     buildFontsDir: 'fonts',
     appDir: 'app',
-    appSrcModule: 'app.ts',
+    appSrcModule: 'app.js',
     appBuildBundle: 'app.bundle.js',
     appSassSrc: ['app.ios.scss', 'app.md.scss'],
     appSassWatch: '**/*.scss',
