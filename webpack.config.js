@@ -39,6 +39,9 @@ module.exports = {
     ]
   },
   resolve: {
+    root: [
+      'app'
+    ],
     alias: {
       'web-animations.min': path.normalize('ionic-framework/js/web-animations.min')
     },
