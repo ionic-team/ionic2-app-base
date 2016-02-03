@@ -48,7 +48,7 @@ We are currently working on completing a few core Ionic 1 features:
 
 ### Current Angular 2 known issues:
 
-- Angular 2 is still in alpha and is not production ready
+- Angular 2 is still in beta and is not production ready
 - Angular team has first focused on developing what the core of Angular 2 "is"
 - Angular 2 filesize has not been optimized for minification yet
 - Angular 2 bootstrap time has not been optimized yet
