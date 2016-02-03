@@ -17,7 +17,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|ts)$/,
         loader: 'awesome-typescript',
         query: {
           doTypeCheck: false,
@@ -47,6 +47,6 @@ module.exports = {
       'ionic': 'ionic-framework',
       'web-animations.min': path.normalize('ionic-framework/js/web-animations.min')
     },
-    extensions: ['', '.js']
+    extensions: ['', '.js', '.ts']
   }
 };
