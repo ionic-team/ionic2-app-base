@@ -38,12 +38,9 @@ module.exports = {
     ]
   },
   resolve: {
-    root: [
-      'app'
-    ],
+    root: ['app'],
     alias: {
-      'angular2': path.resolve('node_modules/angular2'),
-      'ionic': 'ionic-framework',
+      'angular2': path.resolve('node_modules/angular2')
     },
     extensions: ['', '.js']
   }
