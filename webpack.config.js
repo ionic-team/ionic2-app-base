@@ -20,7 +20,8 @@ module.exports = {
         loader: 'awesome-typescript',
         query: {
           doTypeCheck: true,
-          resolveGlobs: false
+          resolveGlobs: false,
+          externals: ['typings/main.d.ts']
         },
         include: path.resolve('app'),
         exclude: /node_modules/
