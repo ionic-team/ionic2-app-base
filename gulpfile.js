@@ -44,5 +44,5 @@ gulp.task('html', ['clean'], copyHTML);
 gulp.task('fonts', ['clean'], copyFonts);
 gulp.task('scripts', ['clean'], copyScripts);
 gulp.task('clean', function(done){
-  del('www/build', done);
+  return del('www/build', done);
 });
