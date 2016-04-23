@@ -1,3 +1,4 @@
+var Promise = require("es6-promise").Promise;
 var gulp = require('gulp'),
     gulpWatch = require('gulp-watch'),
     del = require('del'),
