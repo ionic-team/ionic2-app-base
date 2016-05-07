@@ -16,6 +16,7 @@
     "ionic-gulp-html-copy": "^1.0.0",
     "ionic-gulp-sass-build": "^1.0.0",
     "ionic-gulp-scripts-copy": "^1.0.1",
-    "run-sequence": "1.1.5"
+    "run-sequence": "1.1.5",
+    "es6-promise" : "^3.1.2"
   }
 }
