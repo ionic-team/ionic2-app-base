@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     del = require('del'),
     runSequence = require('run-sequence'),
     argv = process.argv;
-
+require('es6-promise').polyfill();
 
 /**
  * Ionic hooks
