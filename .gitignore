@@ -30,3 +30,10 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+# VS TACO
+bin/
+bld/
+.vs/
+*.user
+*.suo
