@@ -32,6 +32,7 @@ var buildSass = require('ionic-gulp-sass-build');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
+var copyAssets = require('ionic-gulp-assets-copy');
 
 var isRelease = argv.indexOf('--release') > -1;
 
@@ -48,7 +49,7 @@ gulp.task('watch', ['clean'], function(done){
 
 gulp.task('build', ['clean'], function(done){
   runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
+    ['sass', 'html', 'fonts', 'scripts', 'assets'],
     function(){
       buildBrowserify({
         minify: isRelease,
@@ -67,6 +68,7 @@ gulp.task('sass', buildSass);
 gulp.task('html', copyHTML);
 gulp.task('fonts', copyFonts);
 gulp.task('scripts', copyScripts);
+gulp.task('assets', copyAssets);
 gulp.task('clean', function(){
   return del('www/build');
 });
