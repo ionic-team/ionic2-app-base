@@ -1,0 +1,11 @@
+// To learn how to add our recommended rules visit this link https://github.com/driftyco/tslint-ionic-rules
+
+{
+    //Uncomment the block below to add your own rules 
+    /*
+    "rules" : {
+
+    }
+    */
+
+}
