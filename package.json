@@ -24,6 +24,7 @@
     "ionic-gulp-sass-build": "^1.0.0",
     "ionic-gulp-scripts-copy": "^2.0.0",
     "ionic-gulp-tslint": "^1.0.0",
+    "tslint-ionic-rules": "^0.0.3",
     "run-sequence": "1.1.5"
   }
 }
