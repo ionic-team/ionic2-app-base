@@ -63,6 +63,15 @@ gulp.task('build', ['clean'], function(done){
   );
 });
 
+gulp.task('tslint', function() {
+  var tslint = require('gulp-tslint');
+  return gulp.src([
+      'app/**/*.ts',
+      '!app/**/*-spec.ts',
+    ]).pipe(tslint())
+      .pipe(tslint.report('verbose'));
+});
+
 gulp.task('sass', buildSass);
 gulp.task('html', copyHTML);
 gulp.task('fonts', copyFonts);
