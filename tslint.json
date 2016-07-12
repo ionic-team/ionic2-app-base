@@ -1,10 +1,8 @@
 {
-    "extends": "tslint-ionic-rules"
-    //Uncomment the block below to add your own rules 
-    /*
+    "extends": "tslint-ionic-rules",
     "rules" : {
 
     }
-    */
+    
 
 }
