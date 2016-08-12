@@ -1,23 +1,10 @@
-var gulp = require('gulp'),
-    gulpWatch = require('gulp-watch'),
-    del = require('del'),
-    runSequence = require('run-sequence'),
-    argv = process.argv;
-
-
-/**
- * Ionic hooks
- * Add ':before' or ':after' to any Ionic project command name to run the specified
- * tasks before or after the command.
- */
-gulp.task('serve:before', ['watch']);
-gulp.task('emulate:before', ['build']);
-gulp.task('deploy:before', ['build']);
-gulp.task('build:before', ['build']);
-
-// we want to 'watch' when livereloading
-var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
-gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
+var gulp = require('gulp');
+var gulpWatch = require('gulp-watch');
+var del = require('del');
+var runSequence = require('run-sequence');
+var webpack = require('webpack');
+var webpackConfig = require('./webpack.config.js');
+var argv = process.argv;
 
 /**
  * Ionic Gulp tasks, for more information on each see
@@ -27,46 +14,58 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
  * changes, but you are of course welcome (and encouraged) to customize your
  * build however you see fit.
  */
-var buildBrowserify = require('ionic-gulp-browserify-typescript');
-var buildSass = require('ionic-gulp-sass-build');
-var copyHTML = require('ionic-gulp-html-copy');
-var copyFonts = require('ionic-gulp-fonts-copy');
-var copyScripts = require('ionic-gulp-scripts-copy');
+var isRelease = false;
+if (argv.indexOf('--release') > -1) {
+  isRelease = true;
+  process.env.NODE_ENV = 'production';
+}
+var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
 
-var isRelease = argv.indexOf('--release') > -1;
-
-gulp.task('watch', ['clean'], function(done){
-  runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
-    function(){
-      gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
-      gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
-      buildBrowserify({ watch: true }).on('end', done);
-    }
-  );
-});
-
-gulp.task('build', ['clean'], function(done){
-  runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
-    function(){
-      buildBrowserify({
-        minify: isRelease,
-        browserifyOptions: {
-          debug: !isRelease
-        },
-        uglifyOptions: {
-          mangle: false
-        }
-      }).on('end', done);
-    }
-  );
-});
-
-gulp.task('sass', buildSass);
-gulp.task('html', copyHTML);
-gulp.task('fonts', copyFonts);
-gulp.task('scripts', copyScripts);
+gulp.task('lint', require('ionic-gulp-tslint'));
 gulp.task('clean', function(){
   return del('www/build');
+});
+
+/**
+ * Ionic hooks
+ * Add ':before' or ':after' to any Ionic project command name to run the specified
+ * tasks before or after the command.
+ */
+//gulp.task('serve:before', ['watch']);
+gulp.task('serve:before', ['build']);
+gulp.task('emulate:before', ['build']);
+gulp.task('deploy:before', ['build']);
+gulp.task('build:before', ['build']);
+
+// we want to 'watch' when livereloading
+gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
+
+/*
+ *
+ */
+gulp.task('watch', ['clean'], function(done){
+  var compiler = webpack(webpackConfig);
+
+  compiler.watch({
+    aggregateTimeout: 300
+  }, function(err, stats) {
+    if (err) {
+      console.log('webpack', stats.toString({}));
+    }
+    done();
+  });
+});
+
+/*
+ *
+ */
+gulp.task('build', ['clean'], function(done){
+  var compiler = webpack(webpackConfig);
+
+  compiler.run(function(err, stats) {
+    if (err) {
+      console.log('webpack', stats.toString({}));
+    }
+    done();
+  });
 });
