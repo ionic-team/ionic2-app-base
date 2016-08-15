@@ -17,9 +17,4 @@ Then run:
 $ ionic start myApp --v2
 ```
 
-Or for TypeScript:
-```bash
-$ ionic start myApp --v2 --ts
-```
-
 More info on this can be found on the Ionic 2 [Getting Started](http://ionicframework.com/docs/v2/getting-started/) page.
