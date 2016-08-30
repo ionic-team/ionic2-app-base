@@ -5,13 +5,18 @@
     "lib": ["dom", "es2015"],
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "outDir": "../dist/tmp/tsc",
+    "declaration": true
   },
   "include": [
-    "./app/**/*.ts"
+    "../dist/tmp/ngc/app/ng-module.ts"
   ],
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
+  },
+  "angularCompilerOptions": {
+    "genDir": ".."
   }
 }

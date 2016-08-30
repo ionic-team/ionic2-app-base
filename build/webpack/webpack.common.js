@@ -11,14 +11,14 @@ var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 module.exports = {
   entry: {
-    app: './app/app'
+    app: path.join(__dirname, '/../../dist/tmp/ngc/app/entry-point.ts'),
+    polyfills: path.join(__dirname, '/../../dist/tmp/ngc/app/polyfills.ts')
   },
 
   resolve: {
     mainFields: ['main', 'browser'],
     aliasFields: ['browser'],
     extensions: ['', '.js', '.ts', '.json', '.scss'],
-    root: __dirname,
     modulesDirectories: ['node_modules']
   },
 
@@ -26,9 +26,16 @@ module.exports = {
     loaders: [
       {
         test: /\.ts$/,
+        loader: 'ts',
+        query: {
+          configFileName: 'tsconfig.json'
+        }
+      },
+      /*{
+        test: /\.ts$/,
         loaders: ['./loaders/glob?{files:["./[name].scss","./[name].md.scss","./[name].ios.scss"]}', 'awesome-typescript-loader'],
         exclude: [/\.(spec|e2e)\.ts$/],
-      },
+      },*/
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({

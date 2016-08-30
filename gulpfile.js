@@ -3,7 +3,7 @@ var gulpWatch = require('gulp-watch');
 var del = require('del');
 var runSequence = require('run-sequence');
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require('./build/webpack/webpack.config.js');
 var argv = process.argv;
 
 /**
@@ -21,9 +21,15 @@ if (argv.indexOf('--release') > -1) {
 }
 var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
 
-gulp.task('lint', require('ionic-gulp-tslint'));
+var buildSass = require('ionic-gulp-sass-build');
+var copyHTML = require('ionic-gulp-html-copy');
+var copyFonts = require('ionic-gulp-fonts-copy');
+var copyScripts = require('ionic-gulp-scripts-copy');
+var tsLint = require('ionic-gulp-tslint');
+
+gulp.task('lint', tsLint);
 gulp.task('clean', function(){
-  return del('www/build');
+  return del(['www/build', 'dist']);
 });
 
 /**
@@ -56,16 +62,50 @@ gulp.task('watch', ['clean'], function(done){
   });
 });
 
-/*
- *
- */
-gulp.task('build', ['clean'], function(done){
+gulp.task('bundle-js', function(done) {
+  runSequence('copy-src', 'run-ngc', 'webpack', 'delete-tmp', done);
+});
+
+gulp.task('delete-tmp', function(done) {
+  var del = require('del');
+  del.sync('./dist/tmp');
+  done();
+});
+
+gulp.task('copy-src', function() {
+  return gulp.src('./src/**/*').pipe(gulp.dest('./dist/tmp/ngc'));
+});
+
+gulp.task('run-ngc', function(done) {
+  var exec = require('child_process').exec;
+  exec('./node_modules/.bin/ngc -p ./build/ngc-config.json', function(err, stderr, stdout) {
+    done(err);
+  });
+});
+
+gulp.task('webpack', function(done) {
   var compiler = webpack(webpackConfig);
 
   compiler.run(function(err, stats) {
     if (err) {
       console.log('webpack', stats.toString({}));
     }
-    done();
+    done(err);
   });
 });
+
+gulp.task('copy-assets', function() {
+  return gulp.src('./assets/**/*').pipe(gulp.dest('./dist/assets'));
+});
+
+gulp.task('copy-dist', function() {
+  return gulp.src('./dist/**/*').pipe(gulp.dest('./www'));
+});
+
+gulp.task('build', function(done){
+  runSequence('clean', 'bundle-js', 'sass', 'html', 'fonts', 'copy-assets', 'copy-dist', done);
+});
+
+gulp.task('sass', buildSass);
+gulp.task('html', copyHTML);
+gulp.task('fonts', copyFonts);
