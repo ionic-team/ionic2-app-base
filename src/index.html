@@ -7,6 +7,18 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
 
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4e8ef7">
+
+  <!-- un-comment this code to enable service worker
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.log('Error', err));
+    }
+  </script>-->
+
   <link ios-href="css/app.ios.css" rel="stylesheet">
   <link md-href="css/app.md.css" rel="stylesheet">
   <link wp-href="css/app.wp.css" rel="stylesheet">
