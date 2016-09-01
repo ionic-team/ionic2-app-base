@@ -11,7 +11,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: path.join(__dirname, '/../../dist/tmp/ngc/app/entry-point.ts'),
+    app: path.join(__dirname, '/../../dist/tmp/ngc/app/main.ts'),
     polyfills: path.join(__dirname, '/../../dist/tmp/ngc/app/polyfills.ts')
   },
 
