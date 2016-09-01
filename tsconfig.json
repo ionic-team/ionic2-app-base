@@ -8,7 +8,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "./app/**/*.ts"
+    "./src/**/*.ts"
   ],
   "compileOnSave": false,
   "atom": {

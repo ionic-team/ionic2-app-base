@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app';
 
 import { HomePage } from '../pages/home/home';
@@ -12,7 +12,7 @@ import { HomePage } from '../pages/home/home';
   imports: [
     IonicModule.forRoot(MyApp)
   ],
-  bootstrap: [MyApp],
+  bootstrap: [IonicApp],
   entryComponents: [
     MyApp
   ]
