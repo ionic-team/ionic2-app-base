@@ -63,7 +63,7 @@ gulp.task('watch', ['clean'], function(done){
 });
 
 gulp.task('bundle-js', function(done) {
-  runSequence('copy-src', 'run-ngc', 'webpack', 'delete-tmp', done);
+  runSequence('copy-src', 'run-ngc', 'webpack', /*'delete-tmp',*/ done);
 });
 
 gulp.task('delete-tmp', function(done) {
