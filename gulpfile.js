@@ -26,6 +26,7 @@ var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 var tsLint = require('ionic-gulp-tslint');
+var serviceWorker = require('ionic-gulp-service-worker');
 
 gulp.task('lint', tsLint);
 gulp.task('clean', function(){
@@ -38,7 +39,7 @@ gulp.task('clean', function(){
  * tasks before or after the command.
  */
 //gulp.task('serve:before', ['watch']);
-gulp.task('serve:before', ['build']);
+gulp.task('serve:before', ['build', 'worker']);
 gulp.task('emulate:before', ['build']);
 gulp.task('deploy:before', ['build']);
 gulp.task('build:before', ['build']);
