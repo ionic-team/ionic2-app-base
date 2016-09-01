@@ -12,7 +12,9 @@
   "include": [
     "../dist/tmp/ngc/app/ng-module.ts"
   ],
-
+  "exclude": [
+    "../node_modules"
+  ],
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false

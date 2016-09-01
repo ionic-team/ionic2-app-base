@@ -26,7 +26,7 @@ var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 var tsLint = require('ionic-gulp-tslint');
-var serviceWorker = require('ionic-gulp-service-worker');
+//var serviceWorker = require('ionic-gulp-service-worker');
 
 gulp.task('lint', tsLint);
 gulp.task('clean', function(){

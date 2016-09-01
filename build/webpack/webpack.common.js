@@ -16,7 +16,7 @@ module.exports = {
   },
 
   resolve: {
-    mainFields: ['main', 'browser'],
+    mainFields: ['module', 'main', 'browser'],
     aliasFields: ['browser'],
     extensions: ['', '.js', '.ts', '.json', '.scss'],
     modulesDirectories: ['node_modules']
