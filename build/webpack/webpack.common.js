@@ -7,7 +7,7 @@ var autoprefixer = require('autoprefixer');
  */
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+// var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 module.exports = {
   entry: {
@@ -55,7 +55,7 @@ module.exports = {
   },
 
   plugins: [
-    new ForkCheckerPlugin(),
+    //new ForkCheckerPlugin(),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: ['polyfills', 'app'].reverse(),

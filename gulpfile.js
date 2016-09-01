@@ -50,7 +50,6 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
 /*
  *
  */
-var buildBrowserify = require('ionic-gulp-browserify-typescript');
 var buildSass = require('ionic-gulp-sass-build');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
