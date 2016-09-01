@@ -3,7 +3,7 @@ var gulpWatch = require('gulp-watch');
 var del = require('del');
 var runSequence = require('run-sequence');
 var webpack = require('webpack');
-var webpackConfig = require('./build/webpack/webpack.config.js');
+var webpackConfig = require('./config/webpack.config.js');
 var argv = process.argv;
 
 /**
