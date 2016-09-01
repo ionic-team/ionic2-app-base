@@ -38,7 +38,7 @@
     "postcss-loader": "^0.9.1",
     "resolve-url-loader": "^1.6.0",
     "run-sequence": "^1.1.5",
-    "sass-loader": "^4.0.0",
+    "sass-loader": "^4.0.1",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.2",
     "tslint": "^3.15.1",
