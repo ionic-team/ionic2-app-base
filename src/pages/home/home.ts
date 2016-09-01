@@ -2,13 +2,14 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
 @Component({
-  //templateUrl: './home.html'
   template: `
-  <ion-navbar *navbar>
-    <ion-title>
-      Blank Starter
-    </ion-title>
-  </ion-navbar>
+  <ion-header>
+    <ion-navbar>
+      <ion-title>
+        Blank Starter
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
 
   <ion-content class="home">
     <h1 text-center>Content goes here</h1>
