@@ -75,7 +75,7 @@ module.exports = {
     // remove other default values
     modulesDirectories: ['node_modules'],
 
-    mainFields: ['module', 'main', 'browser'],
+    mainFields: ['main', 'browser'],
   },
 
   /*

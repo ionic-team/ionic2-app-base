@@ -86,7 +86,7 @@ gulp.task('bundle-js', function(done) {
     // do webpack stuff
     runWebpack(function(webpackErr) {
       // either way, we want to delete the contents of .ngc
-      deleteNgcDir();
+      //deleteNgcDir();
       done(webpackErr);
     });
   })
