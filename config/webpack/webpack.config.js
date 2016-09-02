@@ -7,6 +7,7 @@
 
 const webpack = require('webpack');
 //const helpers = require('../helpers');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 /*
  * Webpack Plugins
@@ -22,7 +23,8 @@ const ComponentSassPlugin = require('../component-sass/index');
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
 module.exports = {
-  debug: true,
+  debug: false,
+  devtool: 'source-map',
 
   /*
    * Cache generated modules and chunks to improve performance for multiple incremental builds.
@@ -51,7 +53,7 @@ module.exports = {
   devtool: 'source-map',
 
   output: {
-    path: './www/build',
+    path: './www/build/js',
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map',
     chunkFilename: '[id].chunk.js'
@@ -138,7 +140,7 @@ module.exports = {
      */
 
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['polyfills', 'vendor'].reverse()
+      name: ['polyfills', 'main'].reverse()
     }),
 
     /*
@@ -149,6 +151,10 @@ module.exports = {
      *
      * See: https://www.npmjs.com/package/copy-webpack-plugin
      */
+    new CopyWebpackPlugin([{
+      from: 'src/assets',
+      to: '../assets'
+    }]),
 
     new CopyWebpackPlugin([{
       from: 'src/index.html',
@@ -169,6 +175,21 @@ module.exports = {
       chunksSortMode: 'dependency'
     }),
 
+    /*new webpack.optimize.UglifyJsPlugin({
+			beautify: false, //prod
+			mangle: { screw_ie8 : true }, //prod
+			compress: { screw_ie8: true }, //prod
+			comments: false //prod
+    }),
+
+		new CompressionPlugin({
+			asset: '[path].gz[query]',
+			algorithm: 'gzip',
+			test: /\.js$|\.html$/,
+			threshold: 10240,
+			minRatio: 0.8
+		})
+    */
   ],
 
   /*
