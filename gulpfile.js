@@ -24,11 +24,11 @@ var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
 var buildSass = require('ionic-gulp-sass-build');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
-var copyScripts = require('ionic-gulp-scripts-copy');
-var tsLint = require('ionic-gulp-tslint');
+var tslint = require('ionic-gulp-tslint');
+
 //var serviceWorker = require('ionic-gulp-service-worker');
 
-gulp.task('lint', tsLint);
+gulp.task('lint', tslint);
 gulp.task('clean', function(){
   return del(['www/build', 'dist']);
 });
@@ -50,11 +50,7 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
 /*
  *
  */
-var buildSass = require('ionic-gulp-sass-build');
-var copyHTML = require('ionic-gulp-html-copy');
-var copyFonts = require('ionic-gulp-fonts-copy');
-var copyScripts = require('ionic-gulp-scripts-copy');
-var tslint = require('ionic-gulp-tslint');
+
 
 var isRelease = argv.indexOf('--release') > -1;
 
@@ -72,27 +68,36 @@ gulp.task('watch', ['clean'], function(done){
 });
 
 gulp.task('bundle-js', function(done) {
-  runSequence('copy-src', 'run-ngc', 'webpack', /*'delete-tmp',*/ done);
+  //runSequence('copy-src', 'run-ngc', 'webpack', /*'delete-tmp',*/ done);
+  var ngcBuild = require('ionic-ngc-build');
+  var path = require('path');
+  ngcBuild.copyAndBuildTypescript({
+    absolutePathSrcDir: path.normalize(path.join(process.cwd(), './src')),
+    absolutePathDestDir: path.normalize(path.join(process.cwd(), './.ngc')),
+    absolutePathTsConfig: path.normalize(path.join(process.cwd(), './tsconfig.json')),
+    includeGlob: ['./app/ng-module.ts', './app/main.ts', './app/polyfills.ts'],
+    pathToNgc: path.normalize(path.join(process.cwd(), './node_modules/.bin/ngc'))
+  }, function(err) {
+    // if an error occurred, just return
+    if (err) {
+      done(err);
+      return;
+    }
+    // do webpack stuff
+    runWebpack(function(webpackErr) {
+      // either way, we want to delete the contents of .ngc
+      deleteNgcDir();
+      done(webpackErr);
+    });
+  })
 });
 
-gulp.task('delete-tmp', function(done) {
+function deleteNgcDir() {
   var del = require('del');
-  del.sync('./dist/tmp');
-  done();
-});
+  del.sync('./.ngc');
+}
 
-gulp.task('copy-src', function() {
-  return gulp.src('./src/**/*').pipe(gulp.dest('./dist/tmp/ngc'));
-});
-
-gulp.task('run-ngc', function(done) {
-  var exec = require('child_process').exec;
-  exec('./node_modules/.bin/ngc -p ./build/ngc-config.json', function(err, stderr, stdout) {
-    done(err);
-  });
-});
-
-gulp.task('webpack', function(done) {
+function runWebpack(done) {
   var compiler = webpack(webpackConfig);
 
   compiler.run(function(err, stats) {
@@ -101,7 +106,7 @@ gulp.task('webpack', function(done) {
     }
     done(err);
   });
-});
+}
 
 gulp.task('copy-assets', function() {
   return gulp.src('./assets/**/*').pipe(gulp.dest('./dist/assets'));
@@ -118,7 +123,6 @@ gulp.task('build', function(done){
 gulp.task('sass', buildSass);
 gulp.task('html', copyHTML);
 gulp.task('fonts', copyFonts);
-gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
   return del('www/build');
 });

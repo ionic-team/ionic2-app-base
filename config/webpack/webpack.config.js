@@ -41,8 +41,8 @@ module.exports = {
    */
   entry: {
 
-    'polyfills': './dist/tmp/ngc/app/polyfills.ts',
-    'main':      './dist/tmp/ngc/app/main.ts'
+    'polyfills': './.ngc/app/polyfills.js',
+    'main':      './.ngc/app/main.js'
 
   },
 
@@ -51,7 +51,7 @@ module.exports = {
   devtool: 'source-map',
 
   output: {
-    path: './dist/js',
+    path: './www/build',
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map',
     chunkFilename: '[id].chunk.js'
@@ -96,13 +96,6 @@ module.exports = {
      * See: http://webpack.github.io/docs/configuration.html#module-loaders
      */
     loaders: [
-      {
-        test: /\.ts$/,
-        loader: 'ts',
-        query: {
-          configFileName: 'tsconfig.json'
-        }
-      },
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({
