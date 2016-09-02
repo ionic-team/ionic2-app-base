@@ -29,9 +29,9 @@
     "del": "^2.2.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.2",
     "file-loader": "^0.9.0",
-    "html-webpack-plugin": "^2.21.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.5",
+    "html-webpack-plugin": "^2.21.0",
     "ionic-gulp-fonts-copy": "^1.0.0",
     "ionic-gulp-html-copy": "^1.0.0",
     "ionic-gulp-sass-build": "^1.0.0",
@@ -47,6 +47,7 @@
     "tslint": "^3.15.1",
     "tslint-ionic-rules": "0.0.4",
     "typescript": "^2.0.2",
+    "vinyl-fs": "2.4.3",
     "webpack": "^2.1.0-beta.21",
     "webpack-dev-server": "^2.1.0-beta.0",
     "webpack-merge": "^0.14.1"
