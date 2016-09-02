@@ -13,8 +13,6 @@ const helpers = require('../helpers');
 // problem with copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 /*
  * Webpack configuration
@@ -95,15 +93,7 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-loaders
      */
-    loaders: [
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          notExtractLoader: 'style-loader',
-          loader: 'css-loader?sourceMap!postcss-loader?sourceMap!resolve-url!sass-loader?sourceMap'
-        })
-      }
-    ]
+    loaders: []
 
   },
 
@@ -152,26 +142,6 @@ module.exports = {
       chunksSortMode: 'dependency'
     }),
 
-  ],
-
-  sassLoader: {
-    includePaths: [
-      'node_modules/ionic-angular/',
-      'node_modules/ionicons/dist/scss/'
-    ]
-  },
-
-  postcss: [
-    autoprefixer({
-      browsers: [
-        'last 2 versions',
-        'iOS >= 8',
-        'Android >= 4.4',
-        'Explorer >= 11',
-        'ExplorerMobile >= 11'
-      ],
-      cascade: false
-    })
   ],
 
   /*
