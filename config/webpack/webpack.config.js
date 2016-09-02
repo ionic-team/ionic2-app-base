@@ -13,6 +13,8 @@ const helpers = require('../helpers');
 // problem with copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 /*
  * Webpack configuration
@@ -20,6 +22,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
 module.exports = {
+  debug: true,
 
   /*
    * Cache generated modules and chunks to improve performance for multiple incremental builds.
@@ -38,10 +41,20 @@ module.exports = {
    */
   entry: {
 
-    'polyfills': './src/polyfills.browser.ts',
-    'vendor':    './src/vendor.browser.ts',
-    'main':      './src/main.browser.ts'
+    'polyfills': './dist/tmp/ngc/app/polyfills.ts',
+    //'main':      './dist/tmp/ngc/app/main.ts'
 
+  },
+
+  debug: true,
+
+  devtool: 'source-map',
+
+  output: {
+    path: './dist/js',
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].bundle.map',
+    chunkFilename: '[id].chunk.js'
   },
 
   /*
@@ -64,6 +77,7 @@ module.exports = {
     // remove other default values
     modulesDirectories: ['node_modules'],
 
+    mainFields: ['module', 'main', 'browser'],
   },
 
   /*
@@ -81,7 +95,22 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-loaders
      */
-    loaders: []
+    loaders: [
+      {
+        test: /\.ts$/,
+        loader: 'ts',
+        query: {
+          configFileName: 'tsconfig.json'
+        }
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          notExtractLoader: 'style-loader',
+          loader: 'css-loader?sourceMap!postcss-loader?sourceMap!resolve-url!sass-loader?sourceMap'
+        })
+      }
+    ]
 
   },
 
@@ -130,6 +159,26 @@ module.exports = {
       chunksSortMode: 'dependency'
     }),
 
+  ],
+
+  sassLoader: {
+    includePaths: [
+      'node_modules/ionic-angular/',
+      'node_modules/ionicons/dist/scss/'
+    ]
+  },
+
+  postcss: [
+    autoprefixer({
+      browsers: [
+        'last 2 versions',
+        'iOS >= 8',
+        'Android >= 4.4',
+        'Explorer >= 11',
+        'ExplorerMobile >= 11'
+      ],
+      cascade: false
+    })
   ],
 
   /*

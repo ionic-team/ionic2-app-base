@@ -3,6 +3,9 @@
   "author": "Ionic",
   "homepage": "http://ionicframework.com/",
   "license": "MIT",
+  "scripts": {
+    "webpack": "webpack --config config/webpack/webpack.config.js"
+  },
   "dependencies": {
     "@angular/common": "2.0.0-rc.6",
     "@angular/compiler": "2.0.0-rc.6",
