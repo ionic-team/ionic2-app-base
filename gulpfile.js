@@ -69,7 +69,8 @@ gulp.task('watch', ['clean'], function(done){
 
 gulp.task('bundle-js', function(done) {
   //runSequence('copy-src', 'run-ngc', 'webpack', /*'delete-tmp',*/ done);
-  var ngcBuild = require('ionic-ngc-build');
+  //var ngcBuild = require('ionic-ngc-build');
+  var ngcBuild = require('./config/build/ngc-build');
   var path = require('path');
   ngcBuild.copyAndBuildTypescript({
     absolutePathSrcDir: path.normalize(path.join(process.cwd(), './src')),
