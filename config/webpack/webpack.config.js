@@ -1,3 +1,4 @@
+
 /**
  * Ionic Webpack2 Config
  * Adapted from @AngularClass https://github.com/AngularClass
@@ -13,6 +14,7 @@ const webpack = require('webpack');
 // problem with copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ComponentSassPlugin = require('../component-sass/index');
 
 /*
  * Webpack configuration
@@ -104,6 +106,24 @@ module.exports = {
    */
   plugins: [
 
+
+    /*
+     * Plugin: ComponentSassPlugin
+     */
+    new ComponentSassPlugin({
+      includeSassPaths: [
+        'node_modules/ionic-angular',
+        'node_modules/ionicons/dist/scss'
+      ],
+      excludeModules: [
+        '@angular',
+        'core-js',
+        'rxjs'
+      ],
+      outFile: 'www/build/css/app.css',
+      outputStyle: 'compressed'
+    }),
+
     /*
      * Plugin: CommonsChunkPlugin
      * Description: Shares common code between the pages.
@@ -112,6 +132,7 @@ module.exports = {
      * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
      * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
      */
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['polyfills', 'vendor'].reverse()
     }),
@@ -124,10 +145,6 @@ module.exports = {
      *
      * See: https://www.npmjs.com/package/copy-webpack-plugin
      */
-    new CopyWebpackPlugin([{
-      from: 'src/assets',
-      to: 'assets'
-    }]),
 
     new CopyWebpackPlugin([{
       from: 'src/index.html',
@@ -142,6 +159,7 @@ module.exports = {
      *
      * See: https://github.com/ampedandwired/html-webpack-plugin
      */
+
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       chunksSortMode: 'dependency'
