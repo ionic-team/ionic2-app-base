@@ -117,12 +117,10 @@ gulp.task('copy-dist', function() {
 });
 
 gulp.task('build', function(done){
-  runSequence('clean', 'bundle-js', 'sass', 'html', 'fonts', 'copy-assets', 'copy-dist', done);
+  runSequence('clean', 'bundle-js', 'copy-dist', done);
 });
 
-gulp.task('sass', buildSass);
-gulp.task('html', copyHTML);
-gulp.task('fonts', copyFonts);
+
 gulp.task('clean', function(){
   return del('www/build');
 });
