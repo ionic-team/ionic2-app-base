@@ -5,7 +5,7 @@
  */
 
 const webpack = require('webpack');
-const helpers = require('../helpers');
+//const helpers = require('../helpers');
 
 /*
  * Webpack Plugins
@@ -67,15 +67,15 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
      */
-    extensions: ['', '.ts', '.js', '.json'],
+    extensions: ['', '.js', '.json'],
 
     // Make sure root is src
-    root: helpers.root('src'),
+    //root: helpers.root('src'),
 
     // remove other default values
     modulesDirectories: ['node_modules'],
 
-    mainFields: ['main', 'browser'],
+    mainFields: ['module', 'main', 'browser'],
   },
 
   /*

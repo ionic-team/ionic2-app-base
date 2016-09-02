@@ -31,7 +31,7 @@ function createTempTsConfig(absolutePathToOriginal, includeGlob, absolutePathToW
     }
 
     // downstream, we have a dependency on es5 code and es2015 modules, so force them
-    //originalConfig.compilerOptions.module = 'es2015';
+    originalConfig.compilerOptions.module = 'es2015';
     originalConfig.compilerOptions.target = 'es5';
 
     originalConfig.include = includeGlob;
