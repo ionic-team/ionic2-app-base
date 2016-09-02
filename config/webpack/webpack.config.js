@@ -5,7 +5,7 @@
  */
 
 const webpack = require('webpack');
-const helpers = require('./helpers');
+const helpers = require('../helpers');
 
 /*
  * Webpack Plugins
