@@ -42,7 +42,7 @@ module.exports = {
   entry: {
 
     'polyfills': './dist/tmp/ngc/app/polyfills.ts',
-    //'main':      './dist/tmp/ngc/app/main.ts'
+    'main':      './dist/tmp/ngc/app/main.ts'
 
   },
 
