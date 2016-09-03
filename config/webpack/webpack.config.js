@@ -153,12 +153,12 @@ module.exports = {
      */
     new CopyWebpackPlugin([{
       from: 'src/assets',
-      to: '../assets'
+      to: '../../assets'
     }]),
 
     new CopyWebpackPlugin([{
       from: 'src/index.html',
-      to: '..'
+      to: '../..'
     }]),
 
     /*
@@ -181,7 +181,7 @@ module.exports = {
 			compress: { screw_ie8: true }, //prod
 			comments: false //prod
     }),
-
+*/
 		new CompressionPlugin({
 			asset: '[path].gz[query]',
 			algorithm: 'gzip',
@@ -189,7 +189,6 @@ module.exports = {
 			threshold: 10240,
 			minRatio: 0.8
 		})
-    */
   ],
 
   /*
