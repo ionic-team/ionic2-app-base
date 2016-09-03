@@ -106,21 +106,25 @@ module.exports = {
    */
   plugins: [
 
-
     /*
      * Plugin: ComponentSassPlugin
      */
     new ComponentSassPlugin({
-      includeSassPaths: [
+      includePaths: [
         'node_modules/ionic-angular',
         'node_modules/ionicons/dist/scss'
       ],
       excludeModules: [
         '@angular',
         'core-js',
-        'rxjs'
+        'lodash',
+        'process',
+        'rxjs',
+        'webpack',
+        'zone.js'
       ],
-      outFile: 'www/build/css/app.css',
+      outFile: 'www/build/app.css',
+      sourceMap: true,
       outputStyle: 'compressed'
     }),
 
