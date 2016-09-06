@@ -112,16 +112,38 @@ module.exports = {
      * Plugin: ComponentSassPlugin
      */
     new ComponentSassPlugin({
+      /**
+       * "includePaths" is used by node-sass for additional
+       * paths to search for sass imports by just name.
+       */
       includePaths: [
         'node_modules/ionic-angular/themes',
         'node_modules/ionicons/dist/scss'
       ],
+
+      /**
+       * "componentSassFiles" is a glob to search for sass
+       * files in the same directory as the component module.
+       */
       componentSassFiles: [
         '*.scss'
       ],
+
+      /**
+       * "variableSassFiles" lists out the files which include
+       * only sass variables. These variables are the first sass files
+       * to be imported so their values override default variables.
+       */
       variableSassFiles: [
         'src/theme/variables'
       ],
+
+      /**
+       * "excludeModules" is used just as a way to skip over
+       * modules which we know wouldn't have any sass we
+       * care to bundle. "excludeModules" isn't necessary, but
+       * is a good way to speed up build times by skipping modules.
+       */
       excludeModules: [
         '@angular',
         'core-js',
@@ -133,9 +155,26 @@ module.exports = {
         'webpack',
         'zone.js'
       ],
+
+      /**
+       * "outFile" where the final CSS file will be saved by node-sass.
+       */
       outFile: 'www/build/app.css',
+
+      /**
+       * "sourceMap" if a source map should be built or not.
+       */
       sourceMap: true,
+
+      /**
+       * "outputStyle" how node-sass should output the css file.
+       */
       outputStyle: 'compressed',
+
+      /**
+       * "autoprefixer" is the config options for autoprefixer.
+       * Excluding this config will skip using autoprefixer.
+       */
       autoprefixer: {
         browsers: [
           'last 2 versions',
