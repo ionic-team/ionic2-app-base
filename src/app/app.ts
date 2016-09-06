@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
+import { HomePage } from '../pages/home/home';
 //import { StatusBar } from 'ionic-native';
 
 
@@ -14,5 +15,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       //StatusBar.styleDefault();
     });
+
+    let hp = new HomePage(null);
+    hp.test();
   }
 }

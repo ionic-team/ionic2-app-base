@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var gulpWatch = require('gulp-watch');
 var del = require('del');
 var runSequence = require('run-sequence');
+var tslint = require('ionic-gulp-tslint');
 var webpack = require('webpack');
 var webpackConfig = require('./config/webpack/webpack.config.js');
 var argv = process.argv;
@@ -21,14 +22,7 @@ if (argv.indexOf('--release') > -1) {
 }
 var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
 
-var tslint = require('ionic-gulp-tslint');
 
-//var serviceWorker = require('ionic-gulp-service-worker');
-
-gulp.task('lint', tslint);
-gulp.task('clean', function(){
-  return del(['www/build', 'dist']);
-});
 
 /**
  * Ionic hooks
@@ -86,10 +80,6 @@ gulp.task('bundle-js', function(done) {
   })
 });
 
-gulp.task('copy-scss', function() {
-  gulp.src('./src/**/*.scss').pipe(gulp.dest('./.ngc'));
-});
-
 function deleteNgcDir() {
   var del = require('del');
   del.sync('./.ngc');
@@ -106,10 +96,6 @@ function runWebpack(done) {
   });
 }
 
-gulp.task('copy-assets', function() {
-  return gulp.src('./assets/**/*').pipe(gulp.dest('./dist/assets'));
-});
-
 gulp.task('build', function(done){
   runSequence('clean', 'bundle-js', done);
 });
@@ -117,5 +103,5 @@ gulp.task('build', function(done){
 gulp.task('clean', function(){
   return del(['www/*', '.ngc']);
 });
-gulp.task('lint', tslint);
 
+gulp.task('lint', tslint);
