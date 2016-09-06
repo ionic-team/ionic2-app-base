@@ -10,7 +10,8 @@
     "transpile-rollup": "tsc --out dist/bundle-es5.js --target es5 --allowJs dist/rollup.js",
     "minify": "uglifyjs --screw-ie8 --compress --mangle --output ./dist/bundle.min.js ./dist/bundle-es5.js",
     "gzip": "gzip -k ./dist/bundle-es5.js",
-    "build": "npm run compile-js && npm run rollup && npm run transpile-rollup && npm run minify && npm run gzip"
+    "build": "npm run compile-js && npm run rollup && npm run transpile-rollup && npm run minify && npm run gzip",
+    "lint": "gulp lint"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.6",
