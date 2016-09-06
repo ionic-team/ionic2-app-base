@@ -86,6 +86,10 @@ gulp.task('bundle-js', function(done) {
   })
 });
 
+gulp.task('copy-scss', function() {
+  gulp.src('./src/**/*.scss').pipe(gulp.dest('./.ngc'));
+});
+
 function deleteNgcDir() {
   var del = require('del');
   del.sync('./.ngc');
@@ -102,10 +106,13 @@ function runWebpack(done) {
   });
 }
 
+gulp.task('copy-assets', function() {
+  return gulp.src('./assets/**/*').pipe(gulp.dest('./dist/assets'));
+});
+
 gulp.task('build', function(done){
   runSequence('clean', 'bundle-js', done);
 });
-
 
 gulp.task('clean', function(){
   return del(['www/*', '.ngc']);
