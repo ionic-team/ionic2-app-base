@@ -21,9 +21,6 @@ if (argv.indexOf('--release') > -1) {
 }
 var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
 
-var buildSass = require('ionic-gulp-sass-build');
-var copyHTML = require('ionic-gulp-html-copy');
-var copyFonts = require('ionic-gulp-fonts-copy');
 var tslint = require('ionic-gulp-tslint');
 
 //var serviceWorker = require('ionic-gulp-service-worker');
@@ -46,10 +43,6 @@ gulp.task('build:before', ['build']);
 
 // we want to 'watch' when livereloading
 gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
-
-/*
- *
- */
 
 
 var isRelease = argv.indexOf('--release') > -1;
@@ -109,16 +102,8 @@ function runWebpack(done) {
   });
 }
 
-gulp.task('copy-assets', function() {
-  return gulp.src('./assets/**/*').pipe(gulp.dest('./dist/assets'));
-});
-
-gulp.task('copy-dist', function() {
-  return gulp.src('./dist/**/*').pipe(gulp.dest('./www'));
-});
-
 gulp.task('build', function(done){
-  runSequence('clean', 'bundle-js', 'copy-dist', done);
+  runSequence('clean', 'bundle-js', done);
 });
 
 
