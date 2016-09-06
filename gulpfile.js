@@ -1,23 +1,10 @@
-var gulp = require('gulp'),
-    gulpWatch = require('gulp-watch'),
-    del = require('del'),
-    runSequence = require('run-sequence'),
-    argv = process.argv;
-
-
-/**
- * Ionic hooks
- * Add ':before' or ':after' to any Ionic project command name to run the specified
- * tasks before or after the command.
- */
-gulp.task('serve:before', ['watch']);
-gulp.task('emulate:before', ['build']);
-gulp.task('deploy:before', ['build']);
-gulp.task('build:before', ['build']);
-
-// we want to 'watch' when livereloading
-var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
-gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
+var gulp = require('gulp');
+var gulpWatch = require('gulp-watch');
+var del = require('del');
+var runSequence = require('run-sequence');
+var webpack = require('webpack');
+var webpackConfig = require('./config/webpack/webpack.config.js');
+var argv = process.argv;
 
 /**
  * Ionic Gulp tasks, for more information on each see
@@ -27,48 +14,101 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
  * changes, but you are of course welcome (and encouraged) to customize your
  * build however you see fit.
  */
-var buildBrowserify = require('ionic-gulp-browserify-typescript');
-var buildSass = require('ionic-gulp-sass-build');
-var copyHTML = require('ionic-gulp-html-copy');
-var copyFonts = require('ionic-gulp-fonts-copy');
-var copyScripts = require('ionic-gulp-scripts-copy');
+var isRelease = false;
+if (argv.indexOf('--release') > -1) {
+  isRelease = true;
+  process.env.NODE_ENV = 'production';
+}
+var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
+
 var tslint = require('ionic-gulp-tslint');
+
+//var serviceWorker = require('ionic-gulp-service-worker');
+
+gulp.task('lint', tslint);
+gulp.task('clean', function(){
+  return del(['www/build', 'dist']);
+});
+
+/**
+ * Ionic hooks
+ * Add ':before' or ':after' to any Ionic project command name to run the specified
+ * tasks before or after the command.
+ */
+//gulp.task('serve:before', ['watch']);
+gulp.task('serve:before', ['build', 'worker']);
+gulp.task('emulate:before', ['build']);
+gulp.task('deploy:before', ['build']);
+gulp.task('build:before', ['build']);
+
+// we want to 'watch' when livereloading
+gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
+
 
 var isRelease = argv.indexOf('--release') > -1;
 
 gulp.task('watch', ['clean'], function(done){
-  runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
-    function(){
-      gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
-      gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
-      buildBrowserify({ watch: true }).on('end', done);
+  var compiler = webpack(webpackConfig);
+
+  compiler.watch({
+    aggregateTimeout: 300
+  }, function(err, stats) {
+    if (err) {
+      console.log('webpack', stats.toString({}));
     }
-  );
+    done();
+  });
 });
 
-gulp.task('build', ['clean'], function(done){
-  runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
-    function(){
-      buildBrowserify({
-        minify: isRelease,
-        browserifyOptions: {
-          debug: !isRelease
-        },
-        uglifyOptions: {
-          mangle: false
-        }
-      }).on('end', done);
+gulp.task('bundle-js', function(done) {
+  //runSequence('copy-src', 'run-ngc', 'webpack', /*'delete-tmp',*/ done);
+  //var ngcBuild = require('ionic-ngc-build');
+  var ngcBuild = require('./config/build/ngc-build');
+  var path = require('path');
+  ngcBuild.copyAndBuildTypescript({
+    absolutePathSrcDir: path.normalize(path.join(process.cwd(), './src')),
+    absolutePathDestDir: path.normalize(path.join(process.cwd(), './.ngc')),
+    absolutePathTsConfig: path.normalize(path.join(process.cwd(), './tsconfig.json')),
+    includeGlob: ['./app/ng-module.ts', './app/main.ts', './app/polyfills.ts'],
+    pathToNgc: path.normalize(path.join(process.cwd(), './node_modules/.bin/ngc'))
+  }, function(err) {
+    // if an error occurred, just return
+    if (err) {
+      done(err);
+      return;
     }
-  );
+    // do webpack stuff
+    runWebpack(function(webpackErr) {
+      // either way, we want to delete the contents of .ngc
+      //deleteNgcDir();
+      done(webpackErr);
+    });
+  })
 });
 
-gulp.task('sass', buildSass);
-gulp.task('html', copyHTML);
-gulp.task('fonts', copyFonts);
-gulp.task('scripts', copyScripts);
+function deleteNgcDir() {
+  var del = require('del');
+  del.sync('./.ngc');
+}
+
+function runWebpack(done) {
+  var compiler = webpack(webpackConfig);
+
+  compiler.run(function(err, stats) {
+    if (err) {
+      console.log('webpack', stats.toString({}));
+    }
+    done(err);
+  });
+}
+
+gulp.task('build', function(done){
+  runSequence('clean', 'bundle-js', done);
+});
+
+
 gulp.task('clean', function(){
-  return del('www/build');
+  return del(['www/*', '.ngc']);
 });
 gulp.task('lint', tslint);
+
