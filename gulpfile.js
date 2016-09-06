@@ -123,7 +123,7 @@ gulp.task('build', function(done){
 
 
 gulp.task('clean', function(){
-  return del('www/build');
+  return del(['www/*', '.ngc']);
 });
 gulp.task('lint', tslint);
 
