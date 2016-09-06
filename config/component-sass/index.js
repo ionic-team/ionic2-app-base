@@ -1,48 +1,24 @@
 var path = require('path');
 
 
-var ComponentSassPlugin = function(opts) {
-  this.opts = opts;
+function generateCss(modulePaths, opts) {
+  console.log('generateCss, modulePaths: ' + modulePaths.length);
 
   // Ensure file's parent directory in the include path
   opts.includePaths = opts.includePaths || [];
   opts.includePaths.unshift(path.dirname(opts.outFile));
 
-  this.opts.excludeModulePaths = (opts.excludeModules || []).map(function(excludeModule) {
-    return '/' + excludeModule + '/';
+  opts.excludeModulePaths = (opts.excludeModules || []).map(function(excludeModule) {
+    return path.sep + excludeModule + path.sep;
   });
 
   opts.sortComponentPathsFn = (opts.sortComponentPathsFn || defaultSortComponentPathsFn);
   opts.sortComponentFilesFn = (opts.sortComponentFilesFn || defaultSortComponentFilesFn);
 
-  opts.componentSassFilePattern = (opts.componentSassFilePattern || ['*.scss']);
-};
-
-
-ComponentSassPlugin.prototype.apply = function(compiler) {
-  var opts = this.opts;
-  var validComponentPaths = [];
+  opts.componentSassFiles = (opts.componentSassFiles || ['*.scss']);
 
   if (!opts.file) {
-    // only check modules if there wasn't a root sass file already provided
-    compiler.plugin('compilation', function(compilation, params) {
-      compilation.plugin('after-optimize-chunks', function(chunks) {
-        addValidModules(compiler.context, chunks, validComponentPaths, opts);
-      });
-    });
-  }
-
-  compiler.plugin('done', function() {
-    generateCss(validComponentPaths, opts);
-  });
-};
-
-
-function generateCss(componentPaths, opts) {
-  console.log('generateCss, componentPaths: ' + componentPaths.length);
-
-  if (!opts.file) {
-    generateSassData(componentPaths, opts);
+    generateSassData(modulePaths, opts);
   }
 
   renderSass(opts);
@@ -61,11 +37,10 @@ function generateSassData(componentPaths, opts) {
    *    potentially easily override library css with the same
    *    css specificity.
    */
-  var sassImports = importUserVariables(opts);
+  var userSassVariableFiles = getUserSassVariableFiles(opts);
+  var componentSassFiles = getComponentSassFiles(componentPaths, opts);
 
-  importComponentSass(sassImports, componentPaths, opts);
-
-  sassImports = sassImports.map(function(sassImport) {
+  var sassImports = userSassVariableFiles.concat(componentSassFiles).map(function(sassImport) {
     return '"' + sassImport + '"';
   });
 
@@ -76,7 +51,7 @@ function generateSassData(componentPaths, opts) {
 }
 
 
-function importUserVariables(opts) {
+function getUserSassVariableFiles(opts) {
   // user variable files should be the very first imports
   if (Array.isArray(opts.variableSassFiles)) {
     return opts.variableSassFiles;
@@ -85,8 +60,14 @@ function importUserVariables(opts) {
 }
 
 
-function importComponentSass(sassImports, componentPaths, opts) {
+function getComponentSassFiles(modulePaths, opts) {
   var glob = require('glob-all');
+
+  var componentSassFiles = [];
+  var componentPaths = modulePaths.filter(function(modulePath) {
+    return isComponentModule(modulePath, opts);
+  });
+
   // sort all components with the library components being first
   // and user components coming lass, so it's easier for user css
   // to override library css with the same specificity
@@ -97,14 +78,117 @@ function importComponentSass(sassImports, componentPaths, opts) {
       cwd: componentPath
     });
 
+    if (!componentFiles.length && componentPath.indexOf(path.sep + 'node_modules' +  path.sep) === -1) {
+      // if we didn't find anything, see if this module is mapped to another directory
+      for (var k in opts.componentToSassMap) {
+        componentPath = componentPath.replace(path.sep + k + path.sep, path.sep + opts.componentToSassMap[k] + path.sep);
+        componentFiles = glob.sync(opts.componentSassFiles, {
+          cwd: componentPath
+        });
+      }
+    }
+
     if (componentFiles.length) {
       componentFiles = componentFiles.sort(opts.sortComponentFilesFn);
 
       componentFiles.forEach(function(componentFile) {
-        sassImports.push(path.join(componentPath, componentFile));
+        componentSassFiles.push(path.join(componentPath, componentFile));
       });
     }
   });
+
+  return componentSassFiles;
+}
+
+
+function renderSass(opts) {
+  var nodeSass = require('node-sass');
+
+  nodeSass.render(opts, function(renderErr, sassResult) {
+    if (renderErr) {
+      // sass render error!
+      console.log('[Sass error] line', renderErr.line, ' column', renderErr.column);
+      console.log(renderErr.message);
+
+    } else {
+      // sass render success!
+      renderSassSuccess(sassResult, opts);
+    }
+  });
+}
+
+
+function renderSassSuccess(sassResult, opts) {
+  if (opts.autoprefixer) {
+    // with autoprefixer
+    var postcss = require('postcss');
+    var autoprefixer = require('autoprefixer');
+
+    postcss([autoprefixer(opts.autoprefixer)])
+      .process(sassResult.css, {
+        to: path.basename(opts.outFile),
+        map: { inline: false }
+
+      }).then(function(postCssResult) {
+        postCssResult.warnings().forEach(function(warn) {
+          console.warn(warn.toString());
+        });
+
+        var apMapResult = null;
+        if (postCssResult.map) {
+          apMapResult = JSON.parse(postCssResult.map.toString()).mappings;
+        }
+
+        writeOutput(opts, postCssResult.css, apMapResult);
+      });
+
+  } else {
+    // without autoprefixer
+    var sassMapResult = null;
+    if (sassResult.map) {
+      sassMapResult = JSON.parse(sassResult.map.toString()).mappings;
+    }
+
+    writeOutput(opts, sassResult.css, sassMapResult);
+  }
+
+}
+
+
+function writeOutput(opts, cssOutput, mappingsOutput) {
+  var fs = require('fs');
+
+  fs.writeFile(opts.outFile, cssOutput, function(fsWriteErr) {
+    if (fsWriteErr) {
+      console.log('Error writing css file:', fsWriteErr);
+
+    } else {
+      console.log('Saved:', opts.outFile);
+
+      if (mappingsOutput) {
+        var sourceMapPath = path.join(path.dirname(opts.outFile), path.basename(opts.outFile) + '.map');
+
+        fs.writeFile(sourceMapPath, mappingsOutput, function(fsWriteErr) {
+          if (fsWriteErr) {
+            console.log('Error writing css map file:', fsWriteErr);
+
+          } else {
+            console.log('Saved:', sourceMapPath);
+          }
+        });
+      }
+    }
+  });
+}
+
+
+function isComponentModule(modulePath, opts) {
+  for (var i = 0; i < opts.excludeModulePaths.length; i++) {
+    if (modulePath.indexOf(opts.excludeModulePaths[i]) > -1) {
+      return false;
+    }
+  }
+  return true;
 }
 
 
@@ -149,108 +233,4 @@ function defaultSortComponentFilesFn(a, b) {
   return (a > b) ? 1 : -1;
 }
 
-
-function addValidModules(context, chunks, validComponentPaths, opts) {
-  chunks.forEach(function(chunk) {
-    chunk.modules.forEach(function(module) {
-      if (isValidModule(module, opts)) {
-        var absolutePath = path.dirname(module.request);
-        var relativePath = absolutePath.replace(context, '');
-
-        if (validComponentPaths.indexOf(relativePath) < 0) {
-          validComponentPaths.push(relativePath);
-        }
-      }
-    });
-  });
-}
-
-
-function isValidModule(modulePath, opts) {
-  for (var i = 0; i < opts.excludeModulePaths.length; i++) {
-    if (modulePath.request.indexOf(opts.excludeModulePaths[i]) > -1) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function renderSass(opts) {
-  var nodeSass = require('node-sass');
-
-  nodeSass.render(opts, function(renderErr, sassResult) {
-    if (renderErr) {
-      // sass render error!
-      console.log('[Sass error] line', renderErr.line, ' column', renderErr.column);
-      console.log(renderErr.message);
-
-    } else {
-      // sass render success!
-      renderSassSuccess(sassResult, opts);
-    }
-  });
-}
-
-function renderSassSuccess(sassResult, opts) {
-  if (opts.autoprefixer) {
-    // with autoprefixer
-    var postcss = require('postcss');
-    var autoprefixer = require('autoprefixer');
-
-    postcss([autoprefixer(opts.autoprefixer)])
-      .process(sassResult.css, {
-        to:   path.basename(opts.outFile),
-        map: { inline: false }
-
-      }).then(function(postCssResult) {
-        postCssResult.warnings().forEach(function(warn) {
-          console.warn(warn.toString());
-        });
-
-        var apMapResult = null;
-        if (postCssResult.map) {
-          apMapResult = JSON.parse(postCssResult.map.toString()).mappings;
-        }
-
-        writeOutput(opts, postCssResult.css, apMapResult);
-      });
-
-  } else {
-    // without autoprefixer
-    var sassMapResult = null;
-    if (sassResult.map) {
-      sassMapResult = JSON.parse(sassResult.map.toString()).mappings;
-    }
-
-    writeOutput(opts, sassResult.css, sassMapResult);
-  }
-
-}
-
-function writeOutput(opts, cssOutput, mappingsOutput) {
-  var fs = require('fs');
-
-  fs.writeFile(opts.outFile, cssOutput, function(fsWriteErr) {
-    if (fsWriteErr) {
-      console.log('Error writing css file:', fsWriteErr);
-
-    } else {
-      console.log('Saved:', opts.outFile);
-
-      if (mappingsOutput) {
-        var sourceMapPath = path.join(path.dirname(opts.outFile), path.basename(opts.outFile) + '.map');
-
-        fs.writeFile(sourceMapPath, mappingsOutput, function(fsWriteErr) {
-          if (fsWriteErr) {
-            console.log('Error writing css map file:', fsWriteErr);
-
-          } else {
-            console.log('Saved:', sourceMapPath);
-          }
-        });
-      }
-    }
-  });
-}
-
-module.exports = ComponentSassPlugin;
+module.exports = generateCss;
