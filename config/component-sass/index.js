@@ -4,6 +4,10 @@ var path = require('path');
 var ComponentSassPlugin = function(opts) {
   this.opts = opts;
 
+  // Ensure file's parent directory in the include path
+  opts.includePaths = opts.includePaths || [];
+  opts.includePaths.unshift(path.dirname(opts.outFile));
+
   this.opts.excludeModulePaths = (opts.excludeModules || []).map(function(excludeModule) {
     return '/' + excludeModule + '/';
   });
@@ -23,7 +27,7 @@ ComponentSassPlugin.prototype.apply = function(compiler) {
     // only check modules if there wasn't a root sass file already provided
     compiler.plugin('compilation', function(compilation, params) {
       compilation.plugin('after-optimize-chunks', function(chunks) {
-        addValidModules(chunks, validComponentPaths, opts);
+        addValidModules(compiler.context, chunks, validComponentPaths, opts);
       });
     });
   }
@@ -146,18 +150,20 @@ function defaultSortComponentFilesFn(a, b) {
 }
 
 
-function addValidModules(chunks, validComponentPaths, opts) {
+function addValidModules(context, chunks, validComponentPaths, opts) {
   chunks.forEach(function(chunk) {
     chunk.modules.forEach(function(module) {
       if (isValidModule(module, opts)) {
-        var componentPath = path.dirname(module.request);
-        if (validComponentPaths.indexOf(componentPath) < 0) {
-          validComponentPaths.push(componentPath);
+        var absolutePath = path.dirname(module.request);
+        var relativePath = absolutePath.replace(context, '');
+
+        if (validComponentPaths.indexOf(relativePath) < 0) {
+          validComponentPaths.push(relativePath);
         }
       }
     });
   });
-};
+}
 
 
 function isValidModule(modulePath, opts) {
@@ -171,10 +177,6 @@ function isValidModule(modulePath, opts) {
 
 function renderSass(opts) {
   var nodeSass = require('node-sass');
-
-  // Ensure file's parent directory in the include path
-  opts.includePaths = opts.includePaths || [];
-  opts.includePaths.unshift(path.dirname(opts.outFile));
 
   nodeSass.render(opts, function(renderErr, sassResult) {
     if (renderErr) {

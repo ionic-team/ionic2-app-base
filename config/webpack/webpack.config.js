@@ -42,10 +42,8 @@ module.exports = {
    * See: http://webpack.github.io/docs/configuration.html#entry
    */
   entry: {
-
     'polyfills': './.ngc/app/polyfills.js',
     'main':      './.ngc/app/main.js'
-
   },
 
   debug: true,
@@ -53,7 +51,7 @@ module.exports = {
   devtool: 'source-map',
 
   output: {
-    path: './www/build/js',
+    path: './www/build',
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map',
     chunkFilename: '[id].chunk.js'
@@ -117,6 +115,7 @@ module.exports = {
        * paths to search for sass imports by just name.
        */
       includePaths: [
+        'src',
         'node_modules/ionic-angular/themes',
         'node_modules/ionicons/dist/scss'
       ],
@@ -159,7 +158,7 @@ module.exports = {
       /**
        * "outFile" where the final CSS file will be saved by node-sass.
        */
-      outFile: 'www/build/app.css',
+      outFile: 'www/build/main.css',
 
       /**
        * "sourceMap" if a source map should be built or not.
@@ -195,7 +194,6 @@ module.exports = {
      * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
      * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
      */
-
     new webpack.optimize.CommonsChunkPlugin({
       name: ['polyfills', 'main'].reverse()
     }),
@@ -210,12 +208,7 @@ module.exports = {
      */
     new CopyWebpackPlugin([{
       from: 'src/assets',
-      to: '../../assets'
-    }]),
-
-    new CopyWebpackPlugin([{
-      from: 'src/index.html',
-      to: '../..'
+      to: '../assets'
     }]),
 
     /*
@@ -226,19 +219,12 @@ module.exports = {
      *
      * See: https://github.com/ampedandwired/html-webpack-plugin
      */
-
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+      filename: '../index.html',
       chunksSortMode: 'dependency'
     }),
 
-    /*new webpack.optimize.UglifyJsPlugin({
-			beautify: false, //prod
-			mangle: { screw_ie8 : true }, //prod
-			compress: { screw_ie8: true }, //prod
-			comments: false //prod
-    }),
-*/
 		new CompressionPlugin({
 			asset: '[path].gz[query]',
 			algorithm: 'gzip',
