@@ -1,14 +1,12 @@
 var path = require('path');
 
 
-function generateCss(modulePaths, opts) {
-  console.log('generateCss, modulePaths: ' + modulePaths.length);
-
+function componentSass(modulePaths, opts) {
   // Ensure file's parent directory in the include path
   opts.includePaths = opts.includePaths || [];
   opts.includePaths.unshift(path.dirname(opts.outFile));
 
-  opts.excludeModulePaths = (opts.excludeModules || []).map(function(excludeModule) {
+  opts.excludeModules = (opts.excludeModules || []).map(function(excludeModule) {
     return path.sep + excludeModule + path.sep;
   });
 
@@ -183,8 +181,8 @@ function writeOutput(opts, cssOutput, mappingsOutput) {
 
 
 function isComponentModule(modulePath, opts) {
-  for (var i = 0; i < opts.excludeModulePaths.length; i++) {
-    if (modulePath.indexOf(opts.excludeModulePaths[i]) > -1) {
+  for (var i = 0; i < opts.excludeModules.length; i++) {
+    if (modulePath.indexOf(opts.excludeModules[i]) > -1) {
       return false;
     }
   }
@@ -233,4 +231,4 @@ function defaultSortComponentFilesFn(a, b) {
   return (a > b) ? 1 : -1;
 }
 
-module.exports = generateCss;
+module.exports = componentSass;
