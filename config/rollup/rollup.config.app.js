@@ -1,6 +1,5 @@
-//rollup hack
-import * as path from 'path'
-import nodeResolve from 'rollup-plugin-node-resolve'
+import * as path from 'path';
+import nodeResolve from 'rollup-plugin-node-resolve';
 
 class RollupNG2 {
   constructor(options){
@@ -9,12 +8,11 @@ class RollupNG2 {
   resolveId(id, from){
 
     if(id.startsWith('rxjs/')){
-      return `${__dirname}/node_modules/rxjs-es/${id.split('rxjs/').pop()}.js`;
+      return `${process.cwd()}/node_modules/rxjs-es/${id.split('rxjs/').pop()}.js`;
     }
 
   }
 }
-
 
 const rollupNG2 = (config) => new RollupNG2(config);
 
@@ -24,9 +22,6 @@ export default {
   sourceMap: true,
   plugins: [
     rollupNG2(),
-    /*nodeResolve({
-      module: true, jsnext: true
-    })*/
     nodeResolve()
   ]
 }

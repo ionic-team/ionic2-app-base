@@ -6,7 +6,9 @@
   "scripts": {
     "clean": "node ./config/build/clean.js",
     "compile-js": "node ./config/build/run-ngc.js",
-    "rollup": "rollup -f iife -c -o www/build/bundle.es6.js",
+    "rollup-app": "rollup -f iife -c ./config/rollup/rollup.config.app.js -o www/build/bundle.es6.js",
+    "rollup-polyfills": "rollup -f iife -c ./config/rollup/rollup.config.polyfills.js -o www/build/polyfills.js",
+    "rollup": "npm run rollup-app && npm run rollup-polyfills",
     "transpile-rollup": "tsc --out www/build/bundle.es5.js --target es5 --allowJs www/build/bundle.es6.js",
     "rename-bundles": "node ./config/build/rename-bundle.js ./www/build/bundle.es6.js ./www/build/bundle.es5.js ./www/build/bundle.js",
     "minify": "uglifyjs --screw-ie8 --compress --mangle --output ./www/build/bundle.min.js ./www/build/bundle.js",
@@ -46,6 +48,7 @@
     "postcss": "5.1.2",
     "resolve-url-loader": "^1.6.0",
     "rollup": "^0.34.13",
+    "rollup-plugin-commonjs": "^4.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "run-sequence": "^1.1.5",
     "rxjs-es": "^5.0.0-beta.11",
