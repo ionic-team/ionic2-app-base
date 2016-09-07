@@ -4,13 +4,15 @@
   "homepage": "http://ionicframework.com/",
   "license": "MIT",
   "scripts": {
-    "webpack": "webpack --config config/webpack/webpack.config.js",
-    "compile-js": "gulp bundle-js",
-    "rollup": "rollup -f iife -c -o dist/rollup.js",
-    "transpile-rollup": "tsc --out dist/bundle-es5.js --target es5 --allowJs dist/rollup.js",
-    "minify": "uglifyjs --screw-ie8 --compress --mangle --output ./dist/bundle.min.js ./dist/bundle-es5.js",
-    "gzip": "gzip -k ./dist/bundle-es5.js",
-    "build": "npm run compile-js && npm run rollup && npm run transpile-rollup && npm run minify && npm run gzip"
+    "clean": "node ./config/build/clean.js",
+    "compile-js": "node ./config/build/run-ngc.js",
+    "rollup": "rollup -f iife -c -o www/build/bundle.es6.js",
+    "transpile-rollup": "tsc --out www/build/bundle.es5.js --target es5 --allowJs www/build/bundle.es6.js",
+    "rename-bundles": "node ./config/build/rename-bundle.js ./www/build/bundle.es6.js ./www/build/bundle.es5.js ./www/build/bundle.js",
+    "minify": "uglifyjs --screw-ie8 --compress --mangle --output ./www/build/bundle.min.js ./www/build/bundle.js",
+    "gzip": "gzip -k ./www/build/bundle.min.js",
+    "copy-html": "node ./config/build/copy-html.js",
+    "build": "npm run clean && npm run compile-js && npm run rollup && npm run transpile-rollup && npm run rename-bundles && npm run minify && npm run gzip && npm run copy-html"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.6",

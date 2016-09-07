@@ -12,18 +12,6 @@ class RollupNG2 {
       return `${__dirname}/node_modules/rxjs-es/${id.split('rxjs/').pop()}.js`;
     }
 
-    if(id.startsWith('@angular/core')){
-      if(id === '@angular/core'){
-        return `${__dirname}/node_modules/@angular/core/index.js`;
-      }
-      return `${__dirname}/node_modules/@angular/core/${id.split('@angular/core').pop()}.js`;
-    }
-    if(id.startsWith('@angular/common')){
-      if(id === '@angular/common'){
-        return `${__dirname}/node_modules/@angular/common/index.js`;
-      }
-      return `${__dirname}/node_modules/@angular/common/${id.split('@angular/common').pop()}.js`;
-    }
   }
 }
 
