@@ -15,7 +15,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 // problem with copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ComponentSassPlugin = require('../component-sass/index');
+const ComponentSassPlugin = require('../component-sass/plugin');
 
 /*
  * Webpack configuration
@@ -119,6 +119,13 @@ module.exports = {
         'node_modules/ionic-angular/themes',
         'node_modules/ionicons/dist/scss'
       ],
+
+      /**
+       *
+       */
+      componentToSassMap: {
+        '.ngc': 'src'
+      },
 
       /**
        * "componentSassFiles" is a glob to search for sass
