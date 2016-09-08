@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "ionic-angular": "nightly",
-    "ionic-native": "1.3.20",
+    "ionic-native": "1.3.21",
     "ionicons": "3.0.0"
   },
   "devDependencies": {
