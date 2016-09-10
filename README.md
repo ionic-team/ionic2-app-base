@@ -8,7 +8,7 @@ This is the base template for Ionic 2 starter apps.
 You'll need the Ionic CLI with support for v2 apps:
 
 ```bash
-$ npm install -g ionic@beta
+$ npm install -g ionic
 ```
 
 Then run:
