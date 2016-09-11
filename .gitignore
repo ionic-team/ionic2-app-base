@@ -13,8 +13,8 @@ log.txt
 
 .idea/
 .sass-cache/
+.tmp/
 .versions/
-.ngc
 coverage/
 dist/
 node_modules/
