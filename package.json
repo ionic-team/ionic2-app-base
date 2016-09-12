@@ -18,10 +18,5 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "latest"
-  },
-  "engines": {
-    "node": ">= 4.2.1",
-    "npm": ">= 3"
-  },
-  "license": "MIT"
+  }
 }
