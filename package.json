@@ -12,10 +12,12 @@
     "ionic_debug_mode" : "true"
   },
   "dependencies": {
-    "@ionic/app-scripts": "latest",
     "ionic-angular": "nightly",
     "ionic-native": "1.3.20",
     "ionicons": "3.0.0"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "latest"
   },
   "engines": {
     "node": ">= 4.2.1",
