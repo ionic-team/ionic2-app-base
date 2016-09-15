@@ -7,7 +7,9 @@
     "build": "ionic-app-scripts build",
     "compress": "ionic-app-scripts compress",
     "copy": "ionic-app-scripts copy",
-    "watch": "ionic-app-scripts watch"
+    "watch": "ionic-app-scripts watch",
+    "serve:before": "build",
+    "build:before": "build"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.6",
