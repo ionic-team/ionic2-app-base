@@ -9,7 +9,11 @@
     "copy": "ionic-app-scripts copy",
     "watch": "ionic-app-scripts watch",
     "serve:before": "build",
-    "build:before": "build"
+    "serve:after": "watch",
+    "emulate:before": "build",
+    "deploy:before": "build",
+    "build:before": "build",
+    "run:before": "build"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.7",
