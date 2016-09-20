@@ -4,10 +4,10 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
-    "build": "ionic-app-scripts build",
+    "build": "ionic-app-scripts build --prod",
     "compress": "ionic-app-scripts compress",
     "copy": "ionic-app-scripts copy",
-    "watch": "ionic-app-scripts watch",
+    "watch": "ionic-app-scripts watch --prod",
     "serve:before": "build",
     "serve:after": "watch",
     "emulate:before": "build",
