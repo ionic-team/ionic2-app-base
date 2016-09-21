@@ -5,8 +5,6 @@
   "private": true,
   "scripts": {
     "build": "ionic-app-scripts build",
-    "compress": "ionic-app-scripts compress",
-    "copy": "ionic-app-scripts copy",
     "watch": "ionic-app-scripts watch",
     "serve:before": "watch",
     "emulate:before": "build",
