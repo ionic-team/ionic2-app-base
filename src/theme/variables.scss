@@ -32,6 +32,30 @@ $colors: (
 );
 
 
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+$text-ios-color:                          #000;
+$background-ios-color:                    #fff;
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+$text-md-color:                           #000;
+$background-md-color:                     #fff;
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+$text-wp-color:                           #000;
+$background-wp-color:                     #fff;
+
+
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can
