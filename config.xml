@@ -28,7 +28,6 @@
       Change these to configure how the splashscreen displays and fades in/out.
       More info here: https://github.com/apache/cordova-plugin-splashscreen
     -->
-    <preference name="AutoHideSplashScreen" value="false" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
     <feature name="StatusBar">
