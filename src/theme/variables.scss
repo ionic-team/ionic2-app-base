@@ -69,3 +69,12 @@ $colors: (
 
 $ionicons-font-path: "../assets/fonts";
 @import "ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+$font-path: "../assets/fonts";
+
+@import "roboto";
+@import "noto-sans";
