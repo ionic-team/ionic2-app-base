@@ -1,11 +1,11 @@
-Ionic 2 App Base
+Ionic App Base
 =====================
 
-This is the base template for Ionic 2 starter apps.
+This is the base template for Ionic starter apps.
 
 ## Using this project
 
-You'll need the Ionic CLI with support for v2 apps:
+Install the latest Ionic CLI:
 
 ```bash
 $ npm install -g ionic
