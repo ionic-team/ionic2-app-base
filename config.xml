@@ -6,6 +6,7 @@
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*"/>
+    <allow-navigation href="http://localhost:8080/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -35,15 +36,14 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-    <allow-navigation href="http://localhost:8080/*"/>
     <feature name="CDVWKWebViewEngine">
         <param name="ios-package" value="CDVWKWebViewEngine" />
     </feature>
-    <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git"/>
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
     <plugin name="cordova-plugin-whitelist" spec="1.3.1"/>
     <plugin name="cordova-plugin-console" spec="1.0.5"/>
     <plugin name="cordova-plugin-statusbar" spec="2.2.1"/>
     <plugin name="cordova-plugin-device" spec="1.1.4"/>
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
+    <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git" />
 </widget>
