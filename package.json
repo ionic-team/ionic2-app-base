@@ -1,5 +1,6 @@
 {
   "name": "ionic-app-base",
+  "version": "0.0.0",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
