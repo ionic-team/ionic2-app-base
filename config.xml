@@ -5,7 +5,7 @@
   <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
   <content src="index.html"/>
   <access origin="*"/>
-  <allow-navigation href="http://ionic.local/*"/>
+  <allow-navigation href="http://localhost:8080/*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
@@ -28,6 +28,7 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine"/>
 
   <platform name="android">
     <allow-intent href="market:*"/>
@@ -92,4 +93,5 @@
   <plugin name="cordova-plugin-statusbar" spec="2.2.1"/>
   <plugin name="cordova-plugin-device" spec="1.1.4"/>
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
+  <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git"/>
 </widget>
