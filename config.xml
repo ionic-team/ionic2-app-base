@@ -21,7 +21,6 @@
   <preference name="AutoHideSplashScreen" value="false"/>
   <preference name="FadeSplashScreenDuration" value="800"/>
   <preference name="SplashMaintainAspectRatio" value="true"/>
-  <preference name="FadeSplashScreenDuration" value="10000"/>
 
   <!--
     Change these to configure how the splashscreen displays and fades in/out.
@@ -29,7 +28,7 @@
   -->
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="10000"/>
 
   <platform name="android">
     <allow-intent href="market:*"/>
